@@ -10,7 +10,7 @@ type DeployCommandsProps = {
  guildId: string
 }
 
-export const deployCommands = async ({ guildId }: DeployCommandsProps) => {
+export const deployGuildCommands = async ({ guildId }: DeployCommandsProps) => {
  try {
   console.log("Started refreshing application (/) commands.")
 
@@ -22,6 +22,23 @@ export const deployCommands = async ({ guildId }: DeployCommandsProps) => {
   )
 
   console.log("Successfully reloaded application (/) commands.")
+ } catch (error) {
+  console.error(error)
+ }
+}
+
+export const deployGlobalCommands = async () => {
+ try {
+  console.log("Started refreshing application global (/) commands.")
+
+  await rest.put(
+   Routes.applicationCommands(config.DISCORD_CLIENT_ID),
+   {
+    body: commandsData
+   }
+  )
+
+  console.log("Successfully reloaded application global (/) commands.")
  } catch (error) {
   console.error(error)
  }

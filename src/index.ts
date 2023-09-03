@@ -1,18 +1,19 @@
 import { Client } from "discord.js";
 import { config } from "./config"
-import { deployCommands } from "./deploy-commands";
+import { deployGuildCommands, deployGlobalCommands } from "./deploy-commands";
 import { commands } from "./commands";
 
 const client = new Client({
  intents: ["Guilds", "GuildMessages", "DirectMessages"]
 })
 
-client.once("ready", () => {
+client.once("ready", async () => {
  console.log("FDRL_bauer online! 😎🌆")
+ await deployGlobalCommands()
 })
 
 client.on("guildCreate", async (guild) => {
- await deployCommands({ guildId: guild.id})
+ await deployGuildCommands({ guildId: guild.id})
 })
 
 client.on("interactionCreate", async (interaction) => {
