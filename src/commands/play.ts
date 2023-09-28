@@ -1,4 +1,4 @@
-import { CommandInteraction, SlashCommandBuilder } from "discord.js";
+import { CommandInteraction, GuildMember, SlashCommandBuilder } from "discord.js";
 import { useMainPlayer } from "discord-player"
 
 export const data = new SlashCommandBuilder()
@@ -9,13 +9,16 @@ export const data = new SlashCommandBuilder()
     .setDescription("Biisin nimi"))
 
 export const execute = async (interaction: CommandInteraction) => {
+ if (!interaction.isChatInputCommand() || !(interaction.member instanceof GuildMember)) return
+
  const player = useMainPlayer()
  if (!player) return interaction.reply("Virhe keissi...")
 
- const channel = interaction.member?.voice.channel
+ const channel = interaction.member.voice.channel
  if (!channel) {
   return interaction.reply("Inshallah... Et voi soittaa musiikkia, jos et ole voicessa.")
  }
+
  const query = interaction.options.getString("query", true)
 
  await interaction.deferReply()
